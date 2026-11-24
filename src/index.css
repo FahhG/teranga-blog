@@ -1,15 +1,25 @@
-/* Feuille de style de départ : le projet évalue React, pas le CSS.
-   Tu peux l'utiliser telle quelle, la modifier, ou demander à une IA de réécrire tout le CSS
-   et de placer les classes (className) dans ton JSX : c'est la seule aide complète autorisée. */
+
+/* ========================================
+   1. VARIABLES ET REGLAGES GENERAUX
+======================================== */
+
 :root {
   --fond: #f7f8fa;
   --texte: #1f1f1f;
   --discret: #666666;
   --accent: #0b6e4f;
+  --accent-fonce: #07543c;
+  --accent-clair: #e8f4ef;
+  --blanc: #ffffff;
   --bord: #dddddd;
   --erreur: #b3261e;
+  --ombre: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
-* { box-sizing: border-box; }
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: system-ui, Arial, sans-serif;
@@ -17,18 +27,527 @@ body {
   color: var(--texte);
   line-height: 1.6;
 }
-.conteneur { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem; }
-.barre-nav { background: #fff; border-bottom: 1px solid var(--bord); }
-.barre-nav .conteneur { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
-.barre-nav a { color: var(--texte); text-decoration: none; padding: .25rem 0; }
-.barre-nav a.active { color: var(--accent); border-bottom: 2px solid var(--accent); font-weight: 600; }
-.grille { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-.carte { background: #fff; border: 1px solid var(--bord); border-radius: 8px; padding: 1rem; }
-.carte h3 { margin-top: 0; text-transform: capitalize; }
-.bouton { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; cursor: pointer; }
-.bouton.secondaire { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
-.champ { display: block; width: 100%; padding: .5rem; margin: .25rem 0 .75rem; border: 1px solid var(--bord); border-radius: 6px; font: inherit; }
-.etat-chargement { color: var(--discret); font-style: italic; }
-.etat-erreur { color: var(--erreur); border: 1px solid var(--erreur); border-radius: 6px; padding: .75rem; }
-.message-erreur { color: var(--erreur); font-size: .9rem; margin: -.5rem 0 .75rem; }
-.discret { color: var(--discret); font-size: .9rem; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-fonce);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ========================================
+   2. STRUCTURE PRINCIPALE
+======================================== */
+
+.layout-principal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenu-principal {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ========================================
+   3. EN-TETE ET NAVIGATION
+======================================== */
+
+.entete {
+  background: var(--blanc);
+  border-bottom: 1px solid var(--bord);
+  padding: 1rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  box-shadow: var(--ombre);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lien-navigation {
+  color: var(--texte);
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.lien-navigation:hover {
+  color: var(--accent);
+}
+
+/* Classe active à ajouter avec NavLink */
+
+.lien-navigation.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-weight: 700;
+}
+
+/* ========================================
+   4. TITRES ET PRESENTATIONS
+======================================== */
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2.2rem;
+  color: var(--accent-fonce);
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+.presentation,
+.entete-page {
+  margin-bottom: 2rem;
+}
+
+.presentation {
+  background: var(--accent-clair);
+  padding: 3rem 2rem;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.presentation h1 {
+  margin-top: 0;
+}
+
+.presentation p {
+  max-width: 750px;
+  margin: 0.7rem auto;
+  color: var(--discret);
+}
+
+/* ========================================
+   5. LISTE ET CARTES D'ARTICLES
+======================================== */
+
+.liste-articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.carte-article {
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 1.3rem;
+  box-shadow: var(--ombre);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carte-article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+}
+
+.carte-article h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  color: var(--accent-fonce);
+}
+
+.carte-article p {
+  color: var(--discret);
+}
+
+.carte-article-contenu {
+  flex: 1;
+}
+
+/* ========================================
+   6. BOUTONS
+======================================== */
+
+button,
+.bouton-accueil {
+  background: var(--accent);
+  color: var(--blanc);
+  border: none;
+  border-radius: 7px;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+button:hover,
+.bouton-accueil:hover {
+  background: var(--accent-fonce);
+  color: var(--blanc);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(11, 110, 79, 0.3);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   7. BARRE DE RECHERCHE
+======================================== */
+
+.barre-recherche {
+  margin-bottom: 2rem;
+}
+
+.barre-recherche label,
+.champ-formulaire label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.barre-recherche input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--bord);
+  border-radius: 7px;
+  background: var(--blanc);
+}
+
+/* ========================================
+   8. ETATS DE CHARGEMENT ET ERREURS
+======================================== */
+
+.etat-chargement {
+  color: var(--discret);
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+.etat-erreur {
+  color: var(--erreur);
+  background: #fff0ef;
+  border: 1px solid var(--erreur);
+  border-radius: 7px;
+  padding: 1rem;
+}
+
+.message-erreur {
+  color: var(--erreur);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.discret {
+  color: var(--discret);
+  font-size: 0.95rem;
+}
+
+/* ========================================
+   9. PAGE DETAIL D'UN ARTICLE
+======================================== */
+
+.detail-article {
+  background: var(--blanc);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--ombre);
+  margin-bottom: 2rem;
+}
+
+.detail-article h1 {
+  text-transform: capitalize;
+}
+
+.detail-article p {
+  color: var(--discret);
+  line-height: 1.9;
+}
+
+/* ========================================
+   10. COMMENTAIRES
+======================================== */
+
+.section-commentaires {
+  margin-top: 2rem;
+}
+
+.form-commentaire {
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.champ-formulaire {
+  margin-bottom: 1.2rem;
+}
+
+.champ-formulaire input,
+.champ-formulaire textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--bord);
+  border-radius: 7px;
+  resize: vertical;
+}
+
+.liste-commentaires {
+  display: grid;
+  gap: 1rem;
+}
+
+.carte-commentaire {
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+  border-radius: 10px;
+  padding: 1.2rem;
+}
+
+.carte-commentaire h4 {
+  color: var(--accent);
+  margin-top: 0;
+}
+
+/* ========================================
+   11. AUTEURS
+======================================== */
+
+.liste-auteurs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.carte-auteur,
+.fiche-auteur {
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--ombre);
+}
+
+.carte-auteur h2,
+.fiche-auteur h1 {
+  color: var(--accent-fonce);
+}
+
+.carte-auteur a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.articles-auteur {
+  margin-top: 2rem;
+}
+
+/* ========================================
+   12. FAVORIS
+======================================== */
+
+.page-favoris .entete-page {
+  background: var(--accent-clair);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+/* ========================================
+   13. CONNEXION ET ESPACE PERSONNEL
+======================================== */
+
+.formulaire-connexion,
+.espace-personnel {
+  max-width: 550px;
+  margin: 2rem auto;
+  background: var(--blanc);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--ombre);
+}
+
+.formulaire-connexion h1,
+.espace-personnel h1 {
+  text-align: center;
+}
+
+.information-connexion {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--accent-clair);
+  border-radius: 7px;
+  font-size: 0.9rem;
+}
+
+.email-utilisateur {
+  color: var(--accent);
+  text-align: center;
+}
+
+/* ========================================
+   14. PAGE 404
+======================================== */
+
+.contenu-404 {
+  text-align: center;
+  background: var(--blanc);
+  max-width: 650px;
+  margin: 3rem auto;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  box-shadow: var(--ombre);
+}
+
+.contenu-404 h1 {
+  font-size: 5rem;
+  margin: 0;
+  color: var(--accent);
+}
+
+.contenu-404 h2 {
+  margin-top: 0;
+}
+
+.bouton-accueil {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+/* ========================================
+   15. PIED DE PAGE
+======================================== */
+
+.pied-de-page {
+  background: #173c30;
+  color: var(--blanc);
+  text-align: center;
+  padding: 1.3rem;
+  margin-top: auto;
+}
+
+.pied-de-page p {
+  margin: 0;
+}
+
+/* ========================================
+   16. RESPONSIVE : TABLETTES ET MOBILES
+======================================== */
+
+@media (max-width: 768px) {
+  .entete {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .navigation {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .contenu-principal {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .presentation {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation {
+    gap: 0.7rem;
+  }
+
+  .lien-navigation {
+    font-size: 0.9rem;
+  }
+
+  .liste-articles,
+  .liste-auteurs {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-article,
+  .form-commentaire,
+  .formulaire-connexion,
+  .espace-personnel {
+    padding: 1.2rem;
+  }
+
+  .contenu-404 h1 {
+    font-size: 3.5rem;
+  }
+}
+
+
+.image-detail-article {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.categorie-article {
+  color: var(--accent);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.contenu-article {
+  line-height: 1.8;
+  white-space: pre-line;
+  margin: 20px 0;
+}
